@@ -1,35 +1,48 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+// 1. Import *useState and * useEffect
+import { useState, useEffect } from 'react'
 import './App.css'
 
 function App() {
-  const [count, setCount] = useState(0)
+  //Detta är JS eller TS land
+  // 2. Skapa vår *dogImage* variabel och även *setDogImage*
+  // Där sätter vi default värdet till null.
+  // Detta för att vänta in våran fetch till att får sin responce
 
+  let [dogImage, setDogImage] = useState(null);
+
+  // 3. Skapa en useEffect function. Detta hanterar vår sidEffekt,
+  // i detta fallet fetching data från våert API.
+  useEffect(() => {
+    //Fetching one dogImage
+    //fetch("https://dog.ceo/api/breeds/image/random")
+      //Fetching many dogs
+      fetch("https://dog.ceo/api/breeds/image/random/15")
+        .then((Response) => Response.json())
+        // 4. Setting *dogIMage* to the url that we recived from the response above
+        .then((data) => setDogImage(data.message));
+  }, []);
+  // END JS/TS-land
+
+  
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    // Detta är JSX-land
+    <div className='App'>
+      {/* 5. Using *dogImage* as the src for our image */}
+      {/*<img width={"200px"} height={"200px"} src={dogImage}></img>*/}
+
+
+      {/** 6. Using dogImage as the src for our image and 
+       * map() our dogs into img-tagg  */}
+      {
+        dogImage && dogImage.map((dog) => (
+          <img width={"200px"} height={"200px"} src={dog}></img>
+        ))
+      }
+
+    </div>
+  );
+  
+
 }
 
 export default App
